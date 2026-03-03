@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- 基础SEO -->
+    <title>简单跑酷游戏 - 免费在线HTML5游戏 | 支持手机和电脑</title>
+    <meta name="description" content="一个简单的跑酷游戏，支持手机和电脑游玩。躲避障碍，收集金币，挑战最高分！三种难度级别，响应式设计，完全免费。">
+    <meta name="keywords" content="跑酷游戏,HTML5游戏,手机游戏,电脑游戏,免费游戏,在线游戏,休闲游戏,躲避游戏">
+    <meta name="author" content="跑酷游戏开发者">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com/">
+    <meta property="og:title" content="简单跑酷游戏 - 免费在线HTML5游戏">
+    <meta property="og:description" content="一个支持手机和电脑的跑酷游戏，躲避障碍，收集金币，挑战最高分！">
+    <meta property="og:image" content="https://your-domain.com/preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-domain.com/">
+    <meta property="twitter:title" content="简单跑酷游戏 - 免费在线HTML5游戏">
+    <meta property="twitter:description" content="一个支持手机和电脑的跑酷游戏，躲避障碍，收集金币，挑战最高分！">
+    <meta property="twitter:image" content="https://your-domain.com/preview.jpg">
+
+    <!-- 网站图标 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="game.js" as="script">
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "简单跑酷游戏",
+      "description": "一个简单的跑酷游戏，支持手机和电脑游玩。躲避障碍，收集金币，挑战最高分！",
+      "genre": ["Action", "Arcade", "Casual"],
+      "operatingSystem": ["Web Browser"],
+      "applicationCategory": "Game",
+      "author": {
+        "@type": "Person",
+        "name": "跑酷游戏开发者"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": "6",
+        "suggestedMaxAge": "99"
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- 加载提示 -->
+    <div id="loading" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000;">
+        <div style="font-size: 2rem; margin-bottom: 20px;">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div style="font-size: 1.2rem; text-align: center; padding: 0 20px;">
+            游戏加载中...<br>
+            如果长时间未加载，请检查网络连接
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="game-header">
+            <h1><i class="fas fa-running"></i> 简单跑酷游戏</h1>
+            <p class="subtitle">躲避障碍，收集金币，挑战最高分！</p>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div class="score-board">
+                    <div class="score-item">
+                        <span class="score-label"><i class="fas fa-star"></i> 分数:</span>
+                        <span id="score" class="score-value">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label"><i class="fas fa-coins"></i> 金币:</span>
+                        <span id="coins" class="score-value">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label"><i class="fas fa-heart"></i> 生命:</span>
+                        <span id="lives" class="score-value">3</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label"><i class="fas fa-tachometer-alt"></i> 速度:</span>
+                        <span id="speed" class="score-value">1.0x</span>
+                    </div>
+                </div>
+
+                <div class="controls-info">
+                    <div class="control-item">
+                        <i class="fas fa-arrow-up"></i> 或 <i class="fas fa-space-bar"></i> 或 点击屏幕 = 跳跃
+                    </div>
+                    <div class="control-item">
+                        <i class="fas fa-arrow-down"></i> = 滑行
+                    </div>
+                    <div class="control-item">
+                        <i class="fas fa-mobile-alt"></i> 手机: 点击屏幕跳跃，长按滑行
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <canvas id="gameCanvas" width="800" height="400"></canvas>
+                <div class="game-overlay" id="startScreen">
+                    <div class="overlay-content">
+                        <h2><i class="fas fa-play-circle"></i> 准备开始</h2>
+                        <p>控制角色躲避障碍物，收集金币</p>
+                        <button id="startBtn" class="btn btn-primary">
+                            <i class="fas fa-play"></i> 开始游戏
+                        </button>
+                        <div class="difficulty-selector">
+                            <p>选择难度:</p>
+                            <div class="difficulty-buttons">
+                                <button class="btn difficulty-btn active" data-difficulty="easy">
+                                    <i class="fas fa-baby"></i> 简单
+                                </button>
+                                <button class="btn difficulty-btn" data-difficulty="medium">
+                                    <i class="fas fa-user"></i> 中等
+                                </button>
+                                <button class="btn difficulty-btn" data-difficulty="hard">
+                                    <i class="fas fa-skull"></i> 困难
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-overlay" id="gameOverScreen" style="display: none;">
+                    <div class="overlay-content">
+                        <h2><i class="fas fa-gamepad"></i> 游戏结束</h2>
+                        <div class="final-score">
+                            <p>最终分数: <span id="finalScore">0</span></p>
+                            <p>收集金币: <span id="finalCoins">0</span></p>
+                            <p>最高速度: <span id="finalSpeed">1.0x</span></p>
+                        </div>
+                        <button id="restartBtn" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> 重新开始
+                        </button>
+                        <button id="backToMenuBtn" class="btn btn-secondary">
+                            <i class="fas fa-home"></i> 返回菜单
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-stats">
+                <div class="stats-card">
+                    <h3><i class="fas fa-trophy"></i> 最高记录</h3>
+                    <div class="stats-item">
+                        <span>最高分数:</span>
+                        <span id="highScore">0</span>
+                    </div>
+                    <div class="stats-item">
+                        <span>最多金币:</span>
+                        <span id="highCoins">0</span>
+                    </div>
+                    <div class="stats-item">
+                        <span>最长生存:</span>
+                        <span id="longestTime">0秒</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="game-footer">
+            <div class="footer-links">
+                <a href="#" id="soundToggle"><i class="fas fa-volume-up"></i> 音效: 开</a>
+                <a href="#" id="instructionsBtn"><i class="fas fa-question-circle"></i> 游戏说明</a>
+                <a href="#" id="shopBtn"><i class="fas fa-store"></i> 皮肤商店</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 游戏说明模态框 -->
+    <div class="modal" id="instructionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-book"></i> 游戏说明</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="instruction-section">
+                    <h4><i class="fas fa-bullseye"></i> 游戏目标</h4>
+                    <p>控制角色尽可能跑得更远，躲避障碍物，收集金币，获得高分。</p>
+                </div>
+                <div class="instruction-section">
+                    <h4><i class="fas fa-gamepad"></i> 控制方式</h4>
+                    <ul>
+                        <li><strong>电脑:</strong> 上箭头/空格键 = 跳跃，下箭头 = 滑行</li>
+                        <li><strong>手机:</strong> 点击屏幕 = 跳跃，长按屏幕 = 滑行</li>
+                    </ul>
+                </div>
+                <div class="instruction-section">
+                    <h4><i class="fas fa-star"></i> 得分规则</h4>
+                    <ul>
+                        <li>每跑过1米得1分</li>
+                        <li>收集金币得10分</li>
+                        <li>成功躲避空中方块得5分</li>
+                        <li>每30秒游戏速度增加</li>
+                        <li>撞到障碍物失去1点生命</li>
+                    </ul>
+                </div>
+                <div class="instruction-section">
+                    <h4><i class="fas fa-cogs"></i> 游戏特性</h4>
+                    <ul>
+                        <li>响应式设计，支持手机和电脑</li>
+                        <li>三种难度级别</li>
+                        <li>本地保存最高记录</li>
+                        <li>音效开关</li>
+                        <li>新增地面金币和空中方块</li>
+                        <li>通过滑行躲避空中方块获得额外分数</li>
+                    </ul>
+                </div>
+                <div class="instruction-section">
+                    <h4><i class="fas fa-plus-circle"></i> 新增游戏机制</h4>
+                    <ul>
+                        <li><strong>地面金币:</strong> 橙色金币出现在地面上，更容易收集</li>
+                        <li><strong>空中方块:</strong> 蓝色方块出现在空中，需要跳跃或滑行躲避</li>
+                        <li><strong>滑行躲避:</strong> 遇到空中方块时，按下箭头键滑行可以躲避并获得5分奖励</li>
+                        <li><strong>难度调整:</strong> 不同难度下空中方块出现概率不同</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商店模态框 -->
+    <div class="modal" id="shopModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-store"></i> 皮肤商店</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="shop-info">
+                    <p>当前金币: <span id="currentCoins">0</span></p>
+                    <p>当前皮肤: <span id="currentSkinName">默认皮肤</span></p>
+                </div>
+                <div class="skins-container">
+                    <div class="skin-item" data-skin="default">
+                        <div class="skin-preview" style="background: #4cc9f0;"></div>
+                        <div class="skin-info">
+                            <h4>默认皮肤</h4>
+                            <p>价格: 免费</p>
+                            <button class="btn btn-small select-skin" data-skin="default">选择</button>
+                        </div>
+                    </div>
+                    <div class="skin-item" data-skin="gold">
+                        <div class="skin-preview" style="background: #ffd700;"></div>
+                        <div class="skin-info">
+                            <h4>黄金皮肤</h4>
+                            <p>价格: 50金币</p>
+                            <button class="btn btn-small buy-skin" data-skin="gold" data-price="50">购买</button>
+                            <button class="btn btn-small select-skin" data-skin="gold" style="display: none;">选择</button>
+                        </div>
+                    </div>
+                    <div class="skin-item" data-skin="diamond">
+                        <div class="skin-preview" style="background: #b9f2ff;"></div>
+                        <div class="skin-info">
+                            <h4>钻石皮肤</h4>
+                            <p>价格: 100金币</p>
+                            <button class="btn btn-small buy-skin" data-skin="diamond" data-price="100">购买</button>
+                            <button class="btn btn-small select-skin" data-skin="diamond" style="display: none;">选择</button>
+                        </div>
+                    </div>
+                    <div class="skin-item" data-skin="rainbow">
+                        <div class="skin-preview rainbow-preview"></div>
+                        <div class="skin-info">
+                            <h4>彩虹皮肤</h4>
+                            <p>价格: 150金币</p>
+                            <button class="btn btn-small buy-skin" data-skin="rainbow" data-price="150">购买</button>
+                            <button class="btn btn-small select-skin" data-skin="rainbow" style="display: none;">选择</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

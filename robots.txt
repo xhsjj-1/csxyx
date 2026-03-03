@@ -1,0 +1,11 @@
+# robots.txt for Parkour Game Website
+User-agent: *
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /cgi-bin/
+
+# Sitemap location
+Sitemap: https://your-domain.com/sitemap.xml
